@@ -10,7 +10,7 @@ const defaultMembers = [
 export default function App() {
   const [members, setMembers] = useState(defaultMembers);
   const [newName, setNewName] = useState("");
-  const [selected, setSelected] = useState(null); // modal target
+  const [selected, setSelected] = useState(null);
   const [editData, setEditData] = useState({ name: "", photo: "", bio: "" });
 
   const addMember = () => {
@@ -26,7 +26,15 @@ export default function App() {
   const removeMember = (index) => {
     const updated = members.filter((_, i) => i !== index);
     setMembers(
-      updated.length ? updated : [{ name: "Placeholder", photo: "https://via.placeholder.com/150", bio: "Awaiting new energy." }]
+      updated.length
+        ? updated
+        : [
+            {
+              name: "Placeholder",
+              photo: "https://via.placeholder.com/150",
+              bio: "Awaiting new energy.",
+            },
+          ]
     );
   };
 
@@ -42,6 +50,19 @@ export default function App() {
     setSelected(null);
   };
 
+  // handle image upload directly
+  const handlePhotoUpload = (e, index) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const updated = [...members];
+      updated[index].photo = reader.result;
+      setMembers(updated);
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 flex flex-col items-center p-6 text-white relative">
       <h1 className="text-5xl font-bold text-cyan-300 mb-6 animate-pulse drop-shadow-[0_0_10px_#00ffff]">
@@ -54,9 +75,24 @@ export default function App() {
           <div
             key={i}
             onClick={() => openModal(m, i)}
-            className="bg-gray-800 p-4 rounded-2xl text-center shadow-lg shadow-cyan-400/30 hover:shadow-cyan-300 hover:scale-105 transition-transform duration-300 cursor-pointer"
+            className="bg-gray-800 p-4 rounded-2xl text-center shadow-lg shadow-cyan-400/30 hover:shadow-cyan-300 hover:scale-105 transition-transform duration-300 cursor-pointer relative"
           >
-            <img src={m.photo} alt={m.name} className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-2 border-cyan-400" />
+            <label className="cursor-pointer block relative">
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => handlePhotoUpload(e, i)}
+              />
+              <img
+                src={m.photo}
+                alt={m.name}
+                className="w-24 h-24 rounded-full mx-auto mb-3 object-cover border-2 border-cyan-400 hover:opacity-80 transition"
+              />
+              <div className="absolute top-6 right-7 text-xs bg-cyan-400 text-black px-2 py-1 rounded-lg shadow-md">
+                Edit
+              </div>
+            </label>
             <h2 className="text-lg font-semibold">{m.name}</h2>
             <p className="text-gray-400 text-sm mt-1">{m.bio}</p>
             <button
@@ -102,12 +138,6 @@ export default function App() {
               className="w-full mb-3 px-3 py-2 bg-gray-800 border border-cyan-400 rounded-lg text-white"
               placeholder="Name"
             />
-            <input
-              value={editData.photo}
-              onChange={(e) => setEditData({ ...editData, photo: e.target.value })}
-              className="w-full mb-3 px-3 py-2 bg-gray-800 border border-cyan-400 rounded-lg text-white"
-              placeholder="Photo URL"
-            />
             <textarea
               value={editData.bio}
               onChange={(e) => setEditData({ ...editData, bio: e.target.value })}
@@ -136,3 +166,4 @@ export default function App() {
     </div>
   );
 }
+
