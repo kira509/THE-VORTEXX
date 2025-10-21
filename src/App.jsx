@@ -25,7 +25,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 flex flex-col items-center p-6">
-      <h1 className="text-5xl font-bold text-neon mb-6 animate-pulse">THE VOREXX 🌌</h1>
+      <h1 className="text-5xl font-bold text-neon mb-6 animate-pulse">THE VORTEXX 🌌</h1>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8">
         {members.map((m, i) => (
