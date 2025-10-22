@@ -119,7 +119,7 @@ export default function App() {
         <h1 className="text-5xl font-extrabold mb-2" style={{ textShadow: "0 0 18px rgba(6,182,212,0.2)" }}>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7c3aed] to-[#06b6d4]">THE VORTEXX</span> 🌌
         </h1>
-        <p className="text-slate-300" " our CREW HUB — MJIBAMBE😂😁."</p>
+        <p className="text-slate-300" our CREW HUB — MJIBAMBE😂😁. </p>
       </header>
 
       {/* Main content */}
@@ -197,7 +197,7 @@ export default function App() {
             </button>
           </div>
 
-          <footer className="text-center text-slate-400">Made with 💙 by GENESIS Crew</footer>
+          <footer className="text-center text-slate-400"> Made with 💙 by GENESIS </footer>
         </section>
 
         {/* right area: (placeholder for other content) */}
