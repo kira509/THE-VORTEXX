@@ -15,11 +15,16 @@ const defaultMembers = [
 function loadFromStorage(key, fallback) {
   try {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : fallback;
-  } catch {
+    const parsed = JSON.parse(item);
+    if (!Array.isArray(parsed)) throw new Error("Invalid data format");
+    return parsed;
+  } catch (err) {
+    console.warn("⚠️ Corrupted or too large localStorage data, resetting:", key, err);
+    localStorage.removeItem(key);
     return fallback;
   }
 }
+
 
 export default function App() {
   // 🔐 Login State
@@ -82,20 +87,29 @@ export default function App() {
     setSelected(null);
   };
 
-  const cancelEdit = () => setSelected(null);
+ const handlePhotoUpload = (e, index) => {
+  e.stopPropagation();
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-  const handlePhotoUpload = (e, index) => {
-    e.stopPropagation();
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const updated = [...members];
-      updated[index] = { ...updated[index], photo: reader.result };
-      setMembers(updated);
-    };
-    reader.readAsDataURL(file);
+  // limit 500 KB per image to avoid localStorage corruption
+  if (file.size > 500 * 1024) {
+    alert("Image too large! Please choose a smaller one (under 500 KB).");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    const result = reader.result;
+    if (typeof result !== "string") return;
+
+    const updated = [...members];
+    updated[index] = { ...updated[index], photo: result };
+    setMembers(updated);
   };
+  reader.readAsDataURL(file);
+};
+
 
   const sendMessage = () => {
     if (!chatText.trim()) return;
