@@ -1,3 +1,54 @@
+import React, { useState } from "react";
+
+const defaultMembers = [
+  { name: "Saint Kieran", photo: "https://via.placeholder.com/150" },
+  { name: "Chems", photo: "https://via.placeholder.com/150" },
+  { name: "Mark", photo: "https://via.placeholder.com/150" },
+  { name: "Young Blood", photo: "https://via.placeholder.com/150" },
+];
+
+export default function App() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const correctPassword = "vortexx123"; // change this to your own secret 🔒
+
+  const handleLogin = () => {
+    if (password === correctPassword) {
+      setAuthenticated(true);
+      setError("");
+    } else {
+      setError("Wrong password. Try again.");
+    }
+  };
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-black to-gray-900 text-white">
+        <h1 className="text-5xl font-bold mb-6 text-neon animate-pulse">THE VORTEXX 🌌</h1>
+        <div className="bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center">
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter password..."
+            className="px-4 py-2 mb-4 rounded-lg bg-gray-700 border border-cyan-400 text-white outline-none"
+          />
+          <button
+            onClick={handleLogin}
+            className="px-6 py-2 bg-cyan-400 text-black font-bold rounded-lg hover:bg-cyan-300 transition"
+          >
+            Enter
+          </button>
+          {error && <p className="text-red-500 mt-3">{error}</p>}
+        </div>
+        <p className="text-gray-500 text-sm mt-6">Authorized users only 🌀</p>
+      </div>
+    );
+  }
+
+  // 👇 Below this line, paste your existing app content
 import React, { useEffect, useState } from "react";
 
 const STORAGE_KEYS = {
