@@ -455,7 +455,7 @@ export default function App() {
             {/* HOME */}
             {tab === NAV.HOME && (
               <div>
-                <h2 className="text-2xl font-bold mb-4 text-cyan-300">Crushie of the Day 💞</h2>
+                <h2 className="text-2xl font-bold mb-4 text-cyan-300">E-FOOTBALL BEST SCORE 👑</h2>
 
                 {/* Post form */}
                 <div className="bg-gray-800 p-4 rounded-2xl mb-4">
